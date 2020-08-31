@@ -1,18 +1,36 @@
-import React, { ButtonHTMLAttributes } from 'react';
-// also exported from '@storybook/react' if you can deal with breaking changes in 6.1
+import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
+import { Button, IButton, ETheme } from './index';
 
-import { Button } from './index';
-
-export default {
+const componentArgTypes: Meta = {
     title: 'Atoms/Button',
     component: Button,
-    argTypes: {
-        backgroundColor: { control: 'color' },
+    parameters: {
+        actions: {
+            handles: ['click']
+        }
     },
-} as Meta;
+    argTypes: {
+        theme: {
+            control: {
+                type: 'inline-radio',
+                options: [ETheme.PRIMARY, ETheme.SECONDARY],
+                expanded: true
+            },
+            defaultValue: ETheme.PRIMARY
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false
+        }
+    }
+}
 
-const Template: Story<React.ButtonHTMLAttributes<HTMLButtonElement>> = (args) => <Button {...args}></Button>;
+export default componentArgTypes
+
+const Template: Story<IButton> = (args) => <Button {...args}></Button>;
 
 export const Default = Template.bind({});
 Default.args = {
