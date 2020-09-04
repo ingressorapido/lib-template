@@ -1,23 +1,27 @@
 import React from 'react';
 import { Button } from './index';
 import { render, waitForElement } from '@testing-library/react';
+import renderer from 'react-test-renderer'
+import 'jest-styled-components'
 
 describe('Component - Button', () => {
-	it('should find button by text', () => {
+	it('it\'s works', () => {
 		const text = 'Button'
-		const { getByText } = render(<Button>{text}</Button>)
-		expect(getByText(text)).toBeInTheDocument()
+		const tree = renderer.create(<Button>{text}</Button>).toJSON()
+		expect(tree).toMatchSnapshot()
 	})
 
-	it('Should change color to secondary', async () => {
+	it('Should change scheme color to secondary', async () => {
 		const text = 'Button'
-		const { getByTestId } = render(<Button theme="secondary" data-testid="btn">{text}</Button>)
+		const tree = renderer.create(<Button theme="secondary" data-testid="btn">{text}</Button>).toJSON()
 
-		const buttonNode = await waitForElement(
-			() => getByTestId("btn")
-		)
+		expect(tree).toHaveStyleRule('background-color', '#FFD146')
+		expect(tree).toHaveStyleRule('color', '#FFFFFF')
+	})
 
-		console.log(buttonNode.style)
-
+	it('Should change scheme color to disabled', async () => {
+		const text = 'Button'
+		const tree = renderer.create(<Button disabled={true} theme="secondary" data-testid="btn">{text}</Button>).toJSON()
+		expect(tree).toHaveStyleRule('color', '#FFFFFF')
 	})
 })
